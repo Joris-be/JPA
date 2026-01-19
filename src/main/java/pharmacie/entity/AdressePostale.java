@@ -3,7 +3,6 @@ package pharmacie.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.NonNull;
-import jakarta.persistence.Embedded;
 
 @Embeddable
 public class AdressePostale {
