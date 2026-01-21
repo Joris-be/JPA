@@ -2,6 +2,7 @@
 -- Dispensaire (Etablissements de santé qui passent commande de médicaments)
 -- Le fichier est chargé au démarrage de l''application
 
+-- ===== INSERTION DES CATEGORIES =====
 -- Insertion des catégories de médicaments
 INSERT INTO CATEGORIE (CODE, LIBELLE, DESCRIPTION) VALUES
 (DEFAULT, 'Antalgiques et Antipyrétiques', 'Médicaments contre la douleur et la fièvre'), -- code : 1
@@ -15,7 +16,7 @@ INSERT INTO CATEGORIE (CODE, LIBELLE, DESCRIPTION) VALUES
 (DEFAULT, 'Médicaments Gastro-intestinaux', 'Médicaments pour les troubles digestifs'),
 (DEFAULT, 'Médicaments Respiratoires', 'Médicaments pour les troubles respiratoires');
 
-
+-- ===== INSERTION DES MEDICAMENTS =====
 -- Catégorie 1: Antalgiques et Antipyrétiques
 INSERT INTO MEDICAMENT (NOM, CATEGORIE_CODE, QUANTITE_PAR_UNITE, PRIX_UNITAIRE, UNITES_EN_STOCK, UNITES_COMMANDEES, NIVEAU_DE_REAPPRO, INDISPONIBLE, imageURL) VALUES
 ('Morphine 10mg', 1, 'Boîte de 14 comprimés', 25.80, 80, 0, 15, false, 'https://images.unsplash.com/photo-1550572017-edd951aa8f72?w=400'),
@@ -27,11 +28,12 @@ INSERT INTO MEDICAMENT (NOM, CATEGORIE_CODE, QUANTITE_PAR_UNITE, PRIX_UNITAIRE, 
 ('Étodolac 400mg', 2, 'Boîte de 14 comprimés', 12.50, 110, 0, 15, false, 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=400'),
 ('Flurbiprofène 100mg', 2, 'Boîte de 30 comprimés', 10.80, 130, 0, 16, false, 'https://images.unsplash.com/photo-1550572017-edd951aa8f72?w=400');
 
--- Catégorie 3: Antibiotiques (2 médicaments indisponbibles)
+-- Catégorie 3: Antibiotiques (2 médicaments indisponibles)
 INSERT INTO MEDICAMENT (NOM, CATEGORIE_CODE, QUANTITE_PAR_UNITE, PRIX_UNITAIRE, UNITES_EN_STOCK, UNITES_COMMANDEES, NIVEAU_DE_REAPPRO, INDISPONIBLE, imageURL) VALUES
 ('Lévofloxacine 500mg', 3, 'Boîte de 7 comprimés', 15.80, 160, 0, 18, true, 'https://images.unsplash.com/photo-1628771065518-0d82f1938462?w=400'),
 ('Clindamycine 300mg', 3, 'Boîte de 16 gélules', 13.20, 140, 0, 16, true, 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400');
- -- Catégorie 4: Antihypertenseurs
+
+-- Catégorie 4: Antihypertenseurs
 INSERT INTO MEDICAMENT (NOM, CATEGORIE_CODE, QUANTITE_PAR_UNITE, PRIX_UNITAIRE, UNITES_EN_STOCK, UNITES_COMMANDEES, NIVEAU_DE_REAPPRO, INDISPONIBLE, imageURL) VALUES
 ('Lisinopril 5mg', 4, 'Boîte de 30 comprimés', 9.99, 95, 0, 12, false, 'https://images.unsplash.com/photo-1550572017-edd951aa8f72?w=400');
 
@@ -62,6 +64,8 @@ INSERT INTO MEDICAMENT (NOM, CATEGORIE_CODE, QUANTITE_PAR_UNITE, PRIX_UNITAIRE, 
 -- ===== INSERTION DES DISPENSAIRES =====
 -- Structure: CODE, NOM, CONTACT, FONCTION, TELEPHONE, FAX, ADRESSE, VILLE, REGION, CODE_POSTAL, PAYS
 INSERT INTO DISPENSAIRE (code, nom, contact, fonction, telephone, fax, adresse, ville, region, code_postal, pays) VALUES
+-- Structure: CODE, NOM, CONTACT, FONCTION, TELEPHONE, FAX, RUE, VILLE, REGION, CODE_POSTAL, PAYS
+INSERT INTO DISPENSAIRE (code, nom, contact, fonction, telephone, fax, rue, ville, region, code_postal, pays) VALUES
 ('PAR01', 'Pharmacie Centrale Paris', 'contact@pharma-paris.fr', 'Directeur', '0142345678', '0142345679', '42 Rue de Rivoli', 'Paris', 'Île-de-France', '75004', 'France'),
 ('PAR02', 'Pharmacie du Marais', 'marais@pharma.fr', 'Gérant', '0142987654', '0142987655', '15 Rue des Rosiers', 'Paris', 'Île-de-France', '75004', 'France'),
 ('MRS01', 'Pharmacie Marseille', 'marseille@pharma.fr', 'Directeur', '0491567890', '0491567891', '123 Boulevard Michelet', 'Marseille', 'PACA', '13008', 'France'),
@@ -76,6 +80,8 @@ INSERT INTO DISPENSAIRE (code, nom, contact, fonction, telephone, fax, adresse, 
 -- ===== INSERTION DES COMMANDES =====
 -- Structure: NUMERO (auto), DATE_COMMANDE, ENVOYEELE, PORT, REMISE, DISPENSAIRE_CODE
 INSERT INTO COMMANDE (date_commande, envoyeele, port, remise, dispensaire_code) VALUES
+-- Structure: NUMERO (auto), SAISIE_LE, ENVOYEE_LE, PORT, REMISE, DISPENSAIRE_CODE
+INSERT INTO COMMANDE (saisie_le, envoyee_le, port, remise, dispensaire_code) VALUES
 ('2025-01-08', '2025-01-10', 15.00, 5.00, 'PAR01'),
 ('2025-01-09', NULL, 12.00, 2.00, 'PAR02'),
 ('2025-01-10', NULL, 18.00, 3.00, 'MRS01'),
@@ -134,5 +140,3 @@ INSERT INTO LIGNE (quantite, commande_numero, medicament_reference) VALUES (45, 
 INSERT INTO LIGNE (quantite, commande_numero, medicament_reference) VALUES (55, 11, 3);
 
 -- Commande 12 (MRS01, 2025-01-13)
-INSERT INTO LIGNE (quantite, commande_numero, medicament_reference) VALUES (75, 12, 2);
-INSERT INTO LIGNE (quantite, commande_numero, medicament_reference) VALUES (25, 12, 5);

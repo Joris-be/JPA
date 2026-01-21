@@ -1,50 +1,71 @@
 package pharmacie.entity;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AccessLevel;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import jakarta.persistence.Embedded;
+
 
 @Entity
-@Getter @Setter @RequiredArgsConstructor @ToString
+@Getter @Setter @NoArgsConstructor @RequiredArgsConstructor @ToString
 public class Commande {
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Setter(AccessLevel.NONE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer numero;
 
     @NonNull
-    private Date envoyeele;
+    @NotNull(message="La date de saisie est obligatoire")
+    @Column(nullable=false)
+    private LocalDate saisieLe;
 
-    @PositiveOrZero
+    @Column
+    private LocalDate envoyeeLe;
+
+    @NonNull
+    @NotNull(message="Le port est obligatoire")
+    @Column(nullable=false)
+    @DecimalMin(value="0.0", message="Le port doit être positif ou nul")
     private BigDecimal port;
-    
-    @PositiveOrZero
+
+    @NonNull
+    @NotNull(message="La remise est obligatoire")
+    @Column(nullable=false)
+    @DecimalMin(value="0.0", message="La remise doit être positive ou nulle")
     private BigDecimal remise;
 
-    @NonNull
-    private Date saisiele;
+    @ToString.Exclude
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "commande", orphanRemoval=true)
+    private List<Ligne> lignes = new LinkedList<>();
 
     @NonNull
-	@Column(unique=true, length = 5)
-    private String dispensaire_code;
+    @ManyToOne(optional=false, fetch=FetchType.LAZY)
+    @JoinColumn(name="dispensaire_code", nullable=false)
+    @ToString.Exclude
+    private Dispensaire dispensaire;
 
-    @NonNull
-	@Column(unique=true, length = 40)
-    private String destinateur;
-
-    @Embedded
-    private AdressePostale adressePostale;
+    public List<Ligne> getLignes() {
+        if (lignes == null) {
+            lignes = new LinkedList<>();
+        }
+        return lignes;
+    }   
 }

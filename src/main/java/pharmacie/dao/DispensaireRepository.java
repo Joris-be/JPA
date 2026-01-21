@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import pharmacie.entity.Dispensaire;
 
 public interface DispensaireRepository extends JpaRepository<Dispensaire, String>{
-List<Dispensaire> findByAdressePostaleRegion(String region);
+    Dispensaire findByNom(String nom);
+
+    List<Dispensaire> findByAdressePostale_RegionIgnoreCase(String region);
 }
